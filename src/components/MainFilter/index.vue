@@ -10,16 +10,12 @@
 							<input type="text" class="form-control" name="value-1" required value="10.0" />
 						</div>
 						<div class="box-field__select">
-							<select data-show-content="true">
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content="<i class='cryptofont cf-earth'></i> BTC"></option>
-								<option data-content="<i class='cryptofont cf-eth'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-							</select>
+							<v-select v-model="selected" :options="cryptos" label="title">
+								<template slot="option" slot-scope="option">
+									<img :src="option.icon" alt="" />
+									{{ option.title }}
+								</template>
+							</v-select>
 						</div>
 					</div>
 				</div>
@@ -56,37 +52,103 @@
 					</div>
 				</div>
 				<div class="filter__col filter__col_3">
-					<input type="submit" value="Обмен" class="btn-yellow" />
+					<input type="submit" value="Обмен" class="btn-yellow" @click.prevent="sendRate()" />
 				</div>
 			</div>
 		</form>
-		<v-select :options="options" label="title">
-			<template slot="option" slot-scope="option">
-				<i :class="`cryptofont ${option.icon}`"></i>
-				{{ option.title }}
-			</template>
-		</v-select>
 	</div>
 </template>
 
 <script>
 import FilterTop from "./FilterTop/index.vue";
+import { mapGetters, mapActions } from "vuex";
 export default {
 	data() {
 		return {
-			options: [
-				{
-					title: "Read the Docs",
-					icon: "cf-earth",
-					url: "cf-earth",
-				},
-			],
+			selected: null,
+			loading: false,
 		};
 	},
 	components: {
 		FilterTop,
 	},
+	computed: {
+		...mapGetters({
+			cryptos: "crypto/cryptos",
+			cryptosLoaded: "crypto/cryptosLoaded",
+		}),
+	},
+	methods: {
+		...mapActions({
+			fetchCryptos: "crypto/fetchCryptos",
+			fetchRate: "crypto/fetchRate",
+		}),
+		async loadCryptos(filters = {}) {
+			this.loading = true;
+			try {
+				await this.fetchCryptos({
+					...filters,
+				});
+			} catch (error) {
+				console.log(error);
+			} finally {
+				this.loading = false;
+			}
+		},
+		async sendRate() {
+			try {
+				await this.fetchRate({
+					base: "HITBTC",
+					quote: "USD",
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		},
+	},
+	async beforeMount() {
+		this.loadCryptos();
+	},
 };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.box-field__select {
+	.v-select {
+		height: 100%;
+		cursor: pointer;
+	}
+	&::v-deep .vs__dropdown-toggle {
+		height: 98px;
+		border-radius: 0;
+		padding: 0;
+		border: none;
+		background: #1b1b1e;
+
+		padding: 10px 32px 10px 10px;
+	}
+	&::v-deep .vs__selected {
+		font-family: "Montserrat";
+		font-style: normal;
+		font-weight: normal;
+		font-size: 18px;
+		line-height: 22px;
+		color: #ffffff;
+		white-space: nowrap;
+		overflow: hidden;
+		-ms-text-overflow: ellipsis;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		display: block;
+	}
+	&::v-deep .vs__search {
+		display: none;
+	}
+	&::v-deep .vs__selected-options {
+		max-width: 100%;
+	}
+	&::v-deep .vs__clear {
+		display: none;
+	}
+}
+</style>
