@@ -2,7 +2,7 @@
 	<!-- BEGIN HEADER -->
 	<header>
 		<div class="wrapper">
-			<router-link to="/Home" tag="a" class-active="active" class="logo">
+			<router-link to="/" tag="a" class-active="active" class="logo">
 				<svg width="116" height="30" viewBox="0 0 116 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M50.943 24H44.8856V0H38.8281V30H44.8856H50.943H57.0004V24H50.943Z" fill="white" />
 					<g class="plus-logo">

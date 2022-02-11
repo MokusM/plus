@@ -2,12 +2,12 @@ import api from "@/modules/api";
 
 const types = {
 	SET_CRUPTO: "SET_CRUPTO",
-	EXCHANGE_CRUPTO: "EXCHANGE_CRUPTO",
+	RATE_CRUPTO: "RATE_CRUPTO",
 };
 const state = () => ({
 	cryptos: [],
 	cryptosLoaded: false,
-	rate: 0,
+	rate: {},
 });
 
 const getters = {
@@ -17,6 +17,10 @@ const getters = {
 
 	cryptosLoaded(state) {
 		return state.cryptosLoaded;
+	},
+
+	rate(state) {
+		return state.rate;
 	},
 };
 
@@ -30,10 +34,10 @@ const actions = {
 		}
 	},
 
-	async fetchRate({ commit }, { base, quote }) {
+	async fetchRate({ commit }) {
 		try {
-			const rate = await api.getRate({ base, quote });
-			commit(types.EXCHANGE_CRUPTO, rate);
+			const rate = await api.getRate();
+			commit(types.RATE_CRUPTO, rate);
 		} catch (error) {
 			throw error;
 		}
@@ -45,8 +49,8 @@ const mutations = {
 		state.cryptos = cryptos;
 		state.cryptosLoaded = true;
 	},
-	[types.EXCHANGE_CRUPTO](state, rate) {
-		state.rate = rate;
+	[types.RATE_CRUPTO](state, rate) {
+		state.rate = [...rate];
 	},
 
 	// [types.ADD_PHOTOS](state, photos) {

@@ -1,5 +1,13 @@
 {
-  "mainTitle": "Currency exchange",
-  "welcomeMessage": "English",
-  "about": "This is about page in US English"
+  "mainTitle": "Currency exchange", 
+  "tabs": "No limits | Fixed percentage | Anonymously",
+  "tabsCont": "Cryptocurrency Exchange No Limits - Who sets the limits anyway? <span>PLUS</span> has no restrictions and limits on cryptocurrency exchange. Exchange cryptocurrencies at the most favorable rate in any quantity. | Cryptocurrency Exchange No Limits - Who sets the limits anyway? <span>PLUS</span> has no restrictions and limits on cryptocurrency exchange. Exchange cryptocurrencies at the most favorable rate in any quantity. | Cryptocurrency Exchange No Limits - Who sets the limits anyway? <span>PLUS</span> has no restrictions and limits on cryptocurrency exchange. Exchange cryptocurrencies at the most favorable rate in any quantity.",
+  "filterAdvance": "201 Cryptocurrency | Without registering | Fixed rate",
+  "labelStart": "Give",
+  "labelEnd": "Get",
+  "btnExchange": "Exchange",
+  "copyright": "Copyright © 2017-2022 PLUS. All rights reserved.",
+  "policy": "Privacy Policy",
+  "termUse": "Terms of use",
+  "faqLinks": ""
 }

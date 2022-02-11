@@ -46,6 +46,7 @@ export const selectedLocale = "ru";
 
 export default new VueI18n({
 	locale: selectedLocale,
+	silentFallbackWarn: true,
 	fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "ru",
 	messages: loadLocaleMessages(),
 });

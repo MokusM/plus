@@ -1,9 +1,6 @@
 import endpoints from "./endpoints";
 import request from "./request";
-import { normalizeCryptos } from "@/utils/normalize";
-const CoinGecko = require("coingecko-api");
-
-const CoinGeckoClient = new CoinGecko();
+import { normalizeCryptos, normalizeRate } from "@/utils/normalize";
 
 class APIClient {
 	constructor() {
@@ -12,16 +9,28 @@ class APIClient {
 	}
 
 	async getCryptos() {
-		const { data } = await CoinGeckoClient.coins.all();
+		const params = {
+			key: this.endpoints.API_KEY,
+			ids: "BTC,ETH,LTC,XRP,USDT_TRC20,USDT_ERC20,TRX,USDC,BCH,XLM,DASH,TON,SHIB,DOGE",
+		};
+		const { data } = await this.request({
+			method: "get",
+			url: this.endpoints.list(),
+			params: params,
+		});
 		return data.map(normalizeCryptos);
 	}
-	async getRate({ base, quote }) {
-		const { data } = await CoinGeckoClient.exchangeRates.all();
-		console.log(data);
 
-		return data.map(normalizeCryptos);
-
-		return data;
+	async getRate() {
+		const params = {
+			key: this.endpoints.API_KEY,
+		};
+		const { data } = await this.request({
+			method: "get",
+			url: this.endpoints.exchangerate(),
+			params: params,
+		});
+		return data.map(normalizeRate);
 	}
 
 	// async refreshAccessToken(refreshToken) {

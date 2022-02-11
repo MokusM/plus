@@ -6,20 +6,20 @@
 				<div class="filter__col filter__col_1">
 					<div class="box-field">
 						<div class="box-field__input">
-							<label for="value-1" class="box-field__label">Отдаю</label>
-							<input type="text" class="form-control" name="value-1" required value="10.0" />
+							<label for="value-1" class="box-field__label">{{ $t("labelStart") }}</label>
+							<input type="text" class="form-control" name="value-1" required value="0" v-model.lazy="startValue" @change="onSetValue" />
 						</div>
 						<div class="box-field__select">
-							<v-select v-model="selected" :options="cryptos" label="title">
+							<v-select :value="currencyStart" :options="cryptos" label="title" @input="setSelectedStart">
 								<template slot="option" slot-scope="option">
 									<img :src="option.icon" alt="" />
-									{{ option.title }}
+									{{ option.id }}
 								</template>
 							</v-select>
 						</div>
 					</div>
 				</div>
-				<a href="#" class="filter__refresh">
+				<a href="#" @click="reverseCurrency" class="filter__refresh">
 					<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path
 							d="M27.2227 1.63437C27 1.5418 26.7438 1.59299 26.5738 1.76354L24.0986 4.23875C21.4428 1.50519 17.8946 0 14.1068 0C13.3056 0 12.4975 0.0699464 11.7054 0.207458C6.31426 1.14444 1.94608 5.1805 0.577528 10.4902C0.531394 10.6685 0.570682 10.8578 0.683191 11.0033C0.795997 11.1489 0.969522 11.234 1.15376 11.234H4.94512C5.19484 11.234 5.41836 11.078 5.50409 10.8432C6.61399 7.8093 9.37104 5.49422 12.5278 4.94566C13.0478 4.85547 13.577 4.80993 14.1017 4.80993C16.6103 4.80993 18.953 5.81419 20.6999 7.63755L18.1863 10.1509C18.0163 10.3211 17.9654 10.5771 18.0571 10.7994C18.1497 11.0221 18.3664 11.167 18.6071 11.167H26.995C27.3236 11.167 27.5903 10.9003 27.5903 10.5717V2.18411C27.5903 1.94362 27.4447 1.72664 27.2227 1.63437Z"
@@ -35,24 +35,21 @@
 				<div class="filter__col filter__col_2">
 					<div class="box-field">
 						<div class="box-field__input">
-							<label for="value-2" class="box-field__label">Получаю</label>
-							<input type="text" class="form-control" name="value-2" required value="123.232565" />
+							<label for="value-2" class="box-field__label">{{ $t("labelEnd") }}</label>
+							<input type="text" class="form-control" name="value-2" required value="0" v-model="endValue" disabled />
 						</div>
 						<div class="box-field__select">
-							<select data-show-content="true">
-								<option data-content="<i class='cryptofont cf-eth'></i> ETH"></option>
-								<option data-content="<i class='cryptofont cf-eth'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content="<i class='icon-bitcoin'></i> BTC"></option>
-								<option data-content=""></option>
-							</select>
+							<v-select :value="currencyEnd" :options="cryptos" label="title" @input="setSelectedEnd">
+								<template slot="option" slot-scope="option">
+									<img :src="option.icon" alt="" />
+									{{ option.id }}
+								</template>
+							</v-select>
 						</div>
 					</div>
 				</div>
 				<div class="filter__col filter__col_3">
-					<input type="submit" value="Обмен" class="btn-yellow" @click.prevent="sendRate()" />
+					<input type="submit" :value="$t('btnExchange')" class="btn-yellow" @click.prevent="sendRate()" />
 				</div>
 			</div>
 		</form>
@@ -65,8 +62,13 @@ import { mapGetters, mapActions } from "vuex";
 export default {
 	data() {
 		return {
-			selected: null,
+			currencyStart: "BTC",
+			currencyEnd: "ETH",
 			loading: false,
+			startValue: 0,
+			currencyStartRate: 0,
+			currencyEndRate: 0,
+			endValue: 0,
 		};
 	},
 	components: {
@@ -76,6 +78,7 @@ export default {
 		...mapGetters({
 			cryptos: "crypto/cryptos",
 			cryptosLoaded: "crypto/cryptosLoaded",
+			rate: "crypto/rate",
 		}),
 	},
 	methods: {
@@ -83,12 +86,28 @@ export default {
 			fetchCryptos: "crypto/fetchCryptos",
 			fetchRate: "crypto/fetchRate",
 		}),
+		setSelectedStart(value) {
+			this.currencyStart = value.id;
+			this.calculateCurrency();
+		},
+		setSelectedEnd(value) {
+			this.currencyEnd = value.id;
+			this.calculateCurrency();
+		},
+		reverseCurrency() {
+			const start = this.currencyStart;
+			const end = this.currencyEnd;
+			this.currencyStart = end;
+			this.currencyEnd = start;
+			this.findRate(this.currencyStart, this.currencyEnd);
+			this.calculateCurrency();
+		},
 		async loadCryptos(filters = {}) {
 			this.loading = true;
 			try {
-				await this.fetchCryptos({
-					...filters,
-				});
+				await this.fetchCryptos();
+				await this.fetchRate();
+				this.findRate(this.currencyStart, this.currencyEnd);
 			} catch (error) {
 				console.log(error);
 			} finally {
@@ -97,13 +116,26 @@ export default {
 		},
 		async sendRate() {
 			try {
-				await this.fetchRate({
-					base: "HITBTC",
-					quote: "USD",
-				});
+				l;
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		findRate(currStar, currEnd) {
+			for (let i = 0; i < this.rate.length; i++) {
+				if (this.rate[i].id === currStar) {
+					this.currencyStartRate = this.rate[i].rate;
+				} else if (this.rate[i].id === currEnd) {
+					this.currencyStartEnd = this.rate[i].rate;
+				}
+			}
+		},
+		calculateCurrency() {
+			let res = (this.startValue * this.currencyStartRate) / this.currencyStartEnd;
+			this.endValue = res.toFixed(5);
+		},
+		onSetValue(value) {
+			this.calculateCurrency();
 		},
 	},
 	async beforeMount() {
@@ -120,11 +152,10 @@ export default {
 	}
 	&::v-deep .vs__dropdown-toggle {
 		height: 98px;
-		border-radius: 0;
+		border-radius: 0 4px 4px 0;
 		padding: 0;
 		border: none;
 		background: #1b1b1e;
-
 		padding: 10px 32px 10px 10px;
 	}
 	&::v-deep .vs__selected {
@@ -146,9 +177,45 @@ export default {
 	}
 	&::v-deep .vs__selected-options {
 		max-width: 100%;
+		display: flex;
+		align-items: center;
 	}
 	&::v-deep .vs__clear {
 		display: none;
+	}
+	&::v-deep .vs__dropdown-menu {
+		padding: 0;
+		background: #1f2023;
+		border-radius: 4px;
+		padding: 0;
+		border: none;
+	}
+	&::v-deep .vs__dropdown-option {
+		display: flex;
+		align-items: center;
+		font-weight: normal;
+		font-size: 18px;
+		line-height: 22px;
+		color: #ffffff;
+		height: 50px;
+		max-width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+		overflow: hidden;
+		-ms-text-overflow: ellipsis;
+		text-overflow: ellipsis;
+		img {
+			//background: #101012;
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			margin-right: 19px;
+		}
+	}
+	&::v-deep .vs__dropdown-option--highlight {
+		color: #262626;
+		text-decoration: none;
+		background-color: #f5f5f5;
 	}
 }
 </style>

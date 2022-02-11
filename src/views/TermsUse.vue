@@ -1,7 +1,7 @@
 <template>
 	<section class="text-block">
 		<div class="wrapper">
-			<h1>Правила пользования</h1>
+			<h1>{{ $t("termUse") }}</h1>
 			<p>
 				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam molestias dolorum inventore nam incidunt atque culpa, harum maiores veniam cumque consequuntur cupiditate ullam minima
 				magnam libero id ipsa, sequi quod!
@@ -18,7 +18,7 @@
 				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam molestias dolorum inventore nam incidunt atque culpa, harum maiores veniam cumque consequuntur cupiditate ullam minima
 				magnam libero id ipsa, sequi quod!
 			</p>
-			<h2>Правила пользования h2</h2>
+			<h2>{{ $t("termUse") }} h2</h2>
 			<p>
 				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam molestias dolorum inventore nam incidunt atque culpa, harum maiores veniam cumque consequuntur cupiditate ullam minima
 				magnam libero id ipsa, sequi quod!

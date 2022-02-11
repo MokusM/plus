@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 
 const routes = [
 	{
-		path: "/Home",
+		path: "/",
 		name: "Home",
 		component: Home,
 	},
@@ -15,7 +15,7 @@ const routes = [
 		name: "PrivacyPolicy",
 		component: () => import(/* webpackChunkName: "TermsUse" */ "../views/PrivacyPolicy.vue"),
 		meta: {
-			breadcrumb: [{ name: "Plus", link: "Home" }, { name: "Политика конфиденциальности" }],
+			breadcrumb: [{ name: "Plus", link: "/" }, { name: "Политика конфиденциальности" }],
 		},
 	},
 	{
@@ -23,7 +23,7 @@ const routes = [
 		name: "TermsUse",
 		component: () => import(/* webpackChunkName: "TermsUse" */ "../views/TermsUse.vue"),
 		meta: {
-			breadcrumb: [{ name: "Plus", link: "Home" }, { name: "Правила пользования" }],
+			breadcrumb: [{ name: "Plus", link: "/" }, { name: "Правила пользования" }],
 		},
 	},
 ];

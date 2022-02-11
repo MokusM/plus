@@ -3,9 +3,9 @@
 	<footer>
 		<div class="wrapper">
 			<div class="footer-row">
-				<div class="copyright">Авторские права © 2017-2021 PLUS. Все права защищены.</div>
-				<router-link to="/PrivacyPolicy" tag="a" class-active="active" class="footer-link footer-link_policy" @click.native="scrollToTop">Политика конфиденциальности</router-link>
-				<router-link to="/TermsUse" tag="a" class-active="active" class="footer-link" @click.native="scrollToTop">Правила пользования</router-link>
+				<div class="copyright">{{ $t("copyright") }}</div>
+				<router-link to="/PrivacyPolicy" tag="a" class-active="active" class="footer-link footer-link_policy" @click.native="scrollToTop">{{ $t("policy") }}</router-link>
+				<router-link to="/TermsUse" tag="a" class-active="active" class="footer-link" @click.native="scrollToTop">{{ $t("termUse") }}</router-link>
 			</div>
 		</div>
 	</footer>
