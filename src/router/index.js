@@ -26,6 +26,14 @@ const routes = [
 			breadcrumb: [{ name: "Plus", link: "/" }, { name: "Правила пользования" }],
 		},
 	},
+	{
+		path: "/Exchange",
+		name: "Exchange",
+		component: () => import(/* webpackChunkName: "Exchange" */ "../views/Exchange.vue"),
+		meta: {
+			breadcrumb: [{ name: "Plus", link: "/" }, { name: "Обмен" }],
+		},
+	},
 ];
 
 const router = new VueRouter({

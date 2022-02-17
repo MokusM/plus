@@ -11,7 +11,7 @@ class APIClient {
 	async getCryptos() {
 		const params = {
 			key: this.endpoints.API_KEY,
-			ids: "BTC,ETH,LTC,XRP,USDT_TRC20,USDT_ERC20,TRX,USDC,BCH,XLM,DASH,TON,SHIB,DOGE",
+			ids: "BTC,ETH,TRX,USD,UYU,SZL,SBD,MOP,EUR,BSD,ARS",
 		};
 		const { data } = await this.request({
 			method: "get",

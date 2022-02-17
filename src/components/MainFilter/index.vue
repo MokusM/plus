@@ -5,18 +5,8 @@
 			<div class="filter">
 				<div class="filter__col filter__col_1">
 					<div class="box-field">
-						<div class="box-field__input">
-							<label for="value-1" class="box-field__label">{{ $t("labelStart") }}</label>
-							<input type="text" class="form-control" name="value-1" required value="0" v-model.lazy="startValue" @change="onSetValue" />
-						</div>
-						<div class="box-field__select">
-							<v-select :value="currencyStart" :options="cryptos" label="title" @input="setSelectedStart">
-								<template slot="option" slot-scope="option">
-									<img :src="option.icon" alt="" />
-									{{ option.id }}
-								</template>
-							</v-select>
-						</div>
+						<InputField :label="$t('labelStart')" :value="startValue" @update-value="onSetValue" />
+						<Select :value="currencyStart" :options="cryptos" @handle-change="setSelectedStart" />
 					</div>
 				</div>
 				<a href="#" @click="reverseCurrency" class="filter__refresh">
@@ -34,18 +24,8 @@
 				</a>
 				<div class="filter__col filter__col_2">
 					<div class="box-field">
-						<div class="box-field__input">
-							<label for="value-2" class="box-field__label">{{ $t("labelEnd") }}</label>
-							<input type="text" class="form-control" name="value-2" required value="0" v-model="endValue" disabled />
-						</div>
-						<div class="box-field__select">
-							<v-select :value="currencyEnd" :options="cryptos" label="title" @input="setSelectedEnd">
-								<template slot="option" slot-scope="option">
-									<img :src="option.icon" alt="" />
-									{{ option.id }}
-								</template>
-							</v-select>
-						</div>
+						<InputField :label="$t('labelEnd')" :value="endValue" :disabled="true" />
+						<Select :value="currencyEnd" :options="cryptos" @handle-change="setSelectedEnd" />
 					</div>
 				</div>
 				<div class="filter__col filter__col_3">
@@ -58,6 +38,8 @@
 
 <script>
 import FilterTop from "./FilterTop/index.vue";
+import InputField from "../InputField/index.vue";
+import Select from "../Select/index.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
 	data() {
@@ -66,13 +48,15 @@ export default {
 			currencyEnd: "ETH",
 			loading: false,
 			startValue: 0,
+			endValue: 0,
 			currencyStartRate: 0,
 			currencyEndRate: 0,
-			endValue: 0,
 		};
 	},
 	components: {
 		FilterTop,
+		InputField,
+		Select,
 	},
 	computed: {
 		...mapGetters({
@@ -99,7 +83,6 @@ export default {
 			const end = this.currencyEnd;
 			this.currencyStart = end;
 			this.currencyEnd = start;
-			this.findRate(this.currencyStart, this.currencyEnd);
 			this.calculateCurrency();
 		},
 		async loadCryptos(filters = {}) {
@@ -114,27 +97,31 @@ export default {
 				this.loading = false;
 			}
 		},
-		async sendRate() {
-			try {
-				l;
-			} catch (error) {
-				console.log(error);
-			}
+		sendRate() {
+			this.$router.push("/Exchange");
 		},
 		findRate(currStar, currEnd) {
 			for (let i = 0; i < this.rate.length; i++) {
 				if (this.rate[i].id === currStar) {
-					this.currencyStartRate = this.rate[i].rate;
+					this.currencyStartRate = +this.rate[i].rate;
 				} else if (this.rate[i].id === currEnd) {
-					this.currencyStartEnd = this.rate[i].rate;
+					this.currencyStartEnd = +this.rate[i].rate;
 				}
 			}
 		},
 		calculateCurrency() {
+			this.findRate(this.currencyStart, this.currencyEnd);
 			let res = (this.startValue * this.currencyStartRate) / this.currencyStartEnd;
-			this.endValue = res.toFixed(5);
+
+			console.log("startValue " + this.startValue);
+			console.log("currencyStartRate " + this.currencyStartRate);
+			console.log("currencyStartEnd " + this.currencyStartEnd);
+			console.log("res " + res);
+
+			this.endValue = +res.toFixed(5);
 		},
 		onSetValue(value) {
+			this.startValue = +value;
 			this.calculateCurrency();
 		},
 	},
@@ -216,6 +203,23 @@ export default {
 		color: #262626;
 		text-decoration: none;
 		background-color: #f5f5f5;
+	}
+}
+.theme-light {
+	.v-select {
+		&::v-deep .vs__dropdown-toggle {
+			background: #dfdfe9;
+		}
+		&::v-deep .vs__selected {
+			color: #1f2023;
+		}
+		&::v-deep .vs__dropdown-menu {
+			background: #dfdfe9;
+			color: #1f2023;
+		}
+		&::v-deep .vs__dropdown-option {
+			color: #1f2023;
+		}
 	}
 }
 </style>

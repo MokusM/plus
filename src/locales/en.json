@@ -9,5 +9,18 @@
   "copyright": "Copyright © 2017-2022 PLUS. All rights reserved.",
   "policy": "Privacy Policy",
   "termUse": "Terms of use",
-  "faqLinks": ""
+  "faqLink": "What is PLUS? | How does PLUS work? | Why do they trust us? | How does a crypto exchange work? | Can I exchange cryptocurrencies for fiat money? | How to buy cryptocurrency?",
+  "faqCont": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt asperiores illum exercitationem optio nemo ratione quae adipisci commodi corporis similique tempora quibusdam velit voluptate, fuga laboriosam. Eveniet adipisci neque architecto. | Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt asperiores illum exercitationem optio nemo ratione quae adipisci commodi corporis similique tempora quibusdam velit voluptate, fuga laboriosam. Eveniet adipisci neque architecto. | Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt asperiores illum exercitationem optio nemo ratione quae adipisci commodi corporis similique tempora quibusdam velit voluptate, fuga laboriosam. Eveniet adipisci neque architecto. | Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt asperiores illum exercitationem optio nemo ratione quae adipisci commodi corporis similique tempora quibusdam velit voluptate, fuga laboriosam. Eveniet adipisci neque architecto. | Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt asperiores illum exercitationem optio nemo ratione quae adipisci commodi corporis similique tempora quibusdam velit voluptate, fuga laboriosam. Eveniet adipisci neque architecto. | Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt asperiores illum exercitationem optio nemo ratione quae adipisci commodi corporis similique tempora quibusdam velit voluptate, fuga laboriosam. Eveniet adipisci neque architecto.",  
+  "innerPageTitle": "Cryptocurrency <span class='hide-mob'>converter</span>",
+  "stepTitle": "Select coins to exchange and enter the amount.",
+  "stepSubTitle": "Please carefully check the recipient's address and order details, then click the 'Exchange' button | The exchange will start automatically when the deposit is received at the address below",
+  "infForm": "The final exchange rate will be fixed",
+  "stepsList": "Details | Waiting for a deposit | Exchange | Completion",
+  "labelAddress": "Address",
+  "placeholderAddress": "Enter wallet address ...",
+  "labelID": "Identifier",
+  "placeholId": "Enter ID ...",
+  "labelEmail": "Email",
+  "placeholEmail": "Enter Email ...",
+  "checkList": "Do not remember entered data | I have read and agree to the terms of service | Get details by email"
 }

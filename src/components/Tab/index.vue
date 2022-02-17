@@ -37,7 +37,6 @@
 </template>
 
 <script>
-var myVar = null;
 export default {
 	data() {
 		return {

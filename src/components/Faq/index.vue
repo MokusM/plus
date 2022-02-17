@@ -9,14 +9,15 @@
 			</div>
 			<h2>F.A.Q.</h2>
 			<ul class="list-faq">
-				<li v-for="(item, index) in faqs" :key="`item+${index}`" :class="[`list-faq__item`, { active: index + 1 === isOpen }]" @click="toggleFaq(index + 1)">
+				<li v-for="(item, index) in 6" :key="`item+${index}`" :class="[`list-faq__item`, { active: index + 1 === isOpen }]" @click="toggleFaq(index + 1)">
 					<div class="list-faq__line list-faq__line_1"></div>
+
 					<div class="list-faq__link">
-						<span v-html="item.title"></span>
+						<span>{{ $tc("faqLink", index) }}</span>
 						<i class="icon-plus"></i>
 					</div>
 					<div v-if="index + 1 === isOpen" class="list-faq__answer">
-						<p v-html="item.article"></p>
+						<p>{{ $tc("faqCont", index) }}</p>
 					</div>
 					<div class="list-faq__line list-faq__line_2"></div>
 				</li>
@@ -26,18 +27,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 export default {
 	name: "Faq",
 	data() {
 		return {
 			isOpen: 0,
 		};
-	},
-	computed: {
-		...mapGetters({
-			faqs: "faq/faqs",
-		}),
 	},
 	methods: {
 		toggleFaq(i) {

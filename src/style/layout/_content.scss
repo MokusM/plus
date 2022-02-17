@@ -696,9 +696,6 @@ ul {
 		line-height: 17px;
 		color: #ffffff;
 		opacity: 0.3;
-		&:hover {
-			opacity: 1;
-		}
 		span {
 			display: inline-block;
 			min-width: 15px;
@@ -2177,12 +2174,4 @@ ul {
 .theme-light .filter__refresh svg path:nth-child(2) {
 	fill: #515673;
 	fill-opacity: 1;
-}
-.theme-light {
-	&::v-deep .vs__dropdown-toggle {
-		background: #dfdfe9;
-	}
-	&::v-deep .vs__dropdown-menu {
-		background: #dfdfe9;
-	}
 }
